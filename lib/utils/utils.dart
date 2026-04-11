@@ -79,4 +79,13 @@ class Utils {
       child: Text(text, style: TextStyle(fontWeight: FontWeight.bold)),
     );
   }
+
+  static void changeFieldFocus(
+    BuildContext context,
+    FocusNode currentFocus,
+    FocusNode nextFocus,
+  ) {
+    currentFocus.unfocus();
+    FocusScope.of(context).requestFocus(nextFocus);
+  }
 }
