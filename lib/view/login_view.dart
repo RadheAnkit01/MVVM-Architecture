@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mvvm/resources/components/round_button.dart';
 import 'package:mvvm/utils/utils.dart';
 // import 'package:mvvm/utils/routes/routes_name.dart';
 // import 'package:mvvm/view/home_screen.dart';
@@ -11,12 +12,25 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
+  final ValueNotifier _obsecurePassword = ValueNotifier<bool>(false);
+
   final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _passwordTextController = TextEditingController();
   FocusNode emailFocusNode = FocusNode();
   FocusNode passwordFocusNode = FocusNode();
   @override
+  void dispose() {
+    super.dispose();
+    _emailTextController.dispose();
+    _passwordTextController.dispose();
+    emailFocusNode.dispose();
+    passwordFocusNode.dispose();
+    _obsecurePassword.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(title: Text('Login')),
       body: SafeArea(
@@ -41,19 +55,52 @@ class _LoginViewState extends State<LoginView> {
                   );
                 },
               ),
-              TextFormField(
-                controller: _passwordTextController,
-                keyboardType: TextInputType.visiblePassword,
-                obscureText: true,
-                focusNode: passwordFocusNode,
-                decoration: InputDecoration(
-                  labelText: "Password",
-                  hintText: "*********",
-                  prefixIcon: Icon(Icons.lock),
-                  suffixIcon: Icon(Icons.visibility_off),
-                ),
+              ValueListenableBuilder(
+                valueListenable: _obsecurePassword,
+                builder: (BuildContext context, dynamic value, Widget? child) {
+                  return TextFormField(
+                    controller: _passwordTextController,
+                    keyboardType: TextInputType.visiblePassword,
+                    obscureText: _obsecurePassword.value,
+                    focusNode: passwordFocusNode,
+                    decoration: InputDecoration(
+                      labelText: "Password",
+                      hintText: "*********",
+                      prefixIcon: Icon(Icons.lock),
+                      suffixIcon: InkWell(
+                        onTap: () {
+                          _obsecurePassword.value = !_obsecurePassword.value;
+                        },
+                        child: _obsecurePassword.value
+                            ? Icon(Icons.visibility_off)
+                            : Icon(Icons.visibility),
+                      ),
+                    ),
+                  );
+                },
               ),
-              //video part 8 -> 19 min done
+              SizedBox(height: height * .1),
+              RoundButton(
+                text: 'Sign In',
+                onPressed: () {
+                  if (_emailTextController.text.isEmpty ||
+                      _passwordTextController.text.isEmpty) {
+                    Utils.flushBarErrorMessageWithTitle(
+                      'Empty Credentials',
+                      'Please Fill Credentials to Proceed',
+                      context,
+                    );
+                  } else if (_passwordTextController.text.length < 8) {
+                    Utils.flushBarErrorMessageWithTitle(
+                      "Password Length Error",
+                      'Password Length should not be less than 8 characters',
+                      context,
+                    );
+                  } else {
+                    print('Api Hit');
+                  }
+                },
+              ),
             ],
           ),
         ),
