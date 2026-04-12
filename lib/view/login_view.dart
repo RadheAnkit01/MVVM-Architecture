@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mvvm/resources/components/round_button.dart';
 import 'package:mvvm/utils/utils.dart';
-// import 'package:mvvm/utils/routes/routes_name.dart';
-// import 'package:mvvm/view/home_screen.dart';
+import 'package:mvvm/view_models/auth_view_model.dart';
+import 'package:provider/provider.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -13,7 +13,6 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   final ValueNotifier _obsecurePassword = ValueNotifier<bool>(false);
-
   final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _passwordTextController = TextEditingController();
   FocusNode emailFocusNode = FocusNode();
@@ -30,9 +29,12 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
+    final authViewModel = Provider.of<AuthViewModel>(context);
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: AppBar(title: Text('Login')),
+      appBar: AppBar(
+        title: Text('Sign In', style: TextStyle(fontWeight: FontWeight.bold)),
+      ),
       body: SafeArea(
         child: Center(
           child: Column(
@@ -40,6 +42,7 @@ class _LoginViewState extends State<LoginView> {
             children: [
               TextFormField(
                 controller: _emailTextController,
+                // initialValue: "eve.holt@reqres.in",
                 keyboardType: TextInputType.emailAddress,
                 focusNode: emailFocusNode,
                 decoration: InputDecoration(
@@ -63,6 +66,7 @@ class _LoginViewState extends State<LoginView> {
                     keyboardType: TextInputType.visiblePassword,
                     obscureText: _obsecurePassword.value,
                     focusNode: passwordFocusNode,
+                    // initialValue: "cityslicka",
                     decoration: InputDecoration(
                       labelText: "Password",
                       hintText: "*********",
@@ -97,7 +101,13 @@ class _LoginViewState extends State<LoginView> {
                       context,
                     );
                   } else {
-                    print('Api Hit');
+                    Map data = {
+                      "email": _emailTextController.text,
+                      "password": _passwordTextController.text,
+                    };
+                    authViewModel.loginApiCall(data, context);
+
+                    print('Tapped on Sign In');
                   }
                 },
               ),

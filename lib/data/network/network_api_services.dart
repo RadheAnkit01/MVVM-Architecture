@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:mvvm/data/app_exceptions.dart';
 import 'package:mvvm/data/network/base_api_services.dart';
+// import 'package:mvvm/resources/app_url.dart';
 
 class NetworkApiServices extends BaseApiServices {
   @override
@@ -22,11 +23,15 @@ class NetworkApiServices extends BaseApiServices {
   }
 
   @override
-  Future<dynamic> getPostApiResponse(String url, dynamic data) async {
+  Future<dynamic> getPostApiResponse(
+    String url,
+    dynamic data,
+    Map<String, String>? headers,
+  ) async {
     dynamic responseJson;
     try {
       final response = await http
-          .post(Uri.parse(url), body: data)
+          .post(Uri.parse(url), body: jsonEncode(data), headers: headers)
           .timeout(Duration(seconds: 10));
 
       responseJson = returnResponse(response);
@@ -40,10 +45,13 @@ class NetworkApiServices extends BaseApiServices {
     switch (response.statusCode) {
       case 200:
         dynamic responseJson = jsonDecode(response.body);
+        print(response);
         return responseJson;
       case 400:
-        return BadRequestException(response.body.toString());
+        print("print from returnResponse ${response.body}");
+        return jsonDecode(response.body);
       default:
+        print(response);
         throw FetchDataException(
           "Error Occur While Communication With Server, With status code${response.statusCode}",
         );

@@ -40,12 +40,16 @@ class Utils {
     );
   }
 
-  static void flushBarErrorMessage(String message, BuildContext context) {
+  static void flushBarErrorMessage(
+    String message,
+    BuildContext context, {
+    Color bgColor = Colors.red,
+  }) {
     showFlushbar(
       context: context,
       flushbar: Flushbar(
         message: message,
-        backgroundColor: Colors.red,
+        backgroundColor: bgColor,
         animationDuration: Duration(milliseconds: 500),
         duration: Duration(seconds: 2),
         icon: Icon(Icons.error_outline),
