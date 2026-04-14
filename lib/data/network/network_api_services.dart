@@ -45,15 +45,15 @@ class NetworkApiServices extends BaseApiServices {
     switch (response.statusCode) {
       case 200:
         dynamic responseJson = jsonDecode(response.body);
-        print(response);
+        print("print from returnResponse: ${response.body}");
         return responseJson;
       case 400:
-        print("print from returnResponse ${response.body}");
+        print("print from returnResponse: ${response.body}");
         return jsonDecode(response.body);
       default:
         print(response);
         throw FetchDataException(
-          "Error Occur While Communication With Server, With status code${response.statusCode}",
+          "Error Occur While Communication With Server, With status code: ${response.statusCode}",
         );
     }
   }

@@ -5,14 +5,14 @@ import 'package:mvvm/utils/utils.dart';
 import 'package:mvvm/view_models/auth_view_model.dart';
 import 'package:provider/provider.dart';
 
-class LoginView extends StatefulWidget {
-  const LoginView({super.key});
+class SignUpView extends StatefulWidget {
+  const SignUpView({super.key});
 
   @override
-  State<LoginView> createState() => _LoginViewState();
+  State<SignUpView> createState() => _SignUpViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
+class _SignUpViewState extends State<SignUpView> {
   final ValueNotifier _obsecurePassword = ValueNotifier<bool>(true);
   final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _passwordTextController = TextEditingController();
@@ -20,12 +20,12 @@ class _LoginViewState extends State<LoginView> {
   FocusNode passwordFocusNode = FocusNode();
   @override
   void dispose() {
-    super.dispose();
     _emailTextController.dispose();
     _passwordTextController.dispose();
     emailFocusNode.dispose();
     passwordFocusNode.dispose();
     _obsecurePassword.dispose();
+    super.dispose();
   }
 
   @override
@@ -34,7 +34,7 @@ class _LoginViewState extends State<LoginView> {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sign In', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text('Sign Up', style: TextStyle(fontWeight: FontWeight.bold)),
       ),
       body: SafeArea(
         child: Center(
@@ -86,7 +86,7 @@ class _LoginViewState extends State<LoginView> {
               ),
               SizedBox(height: height * .1),
               RoundButton(
-                text: 'Sign In',
+                text: 'Sign Up',
                 loading: authViewModel.loading,
                 onPressed: () {
                   if (_emailTextController.text.isEmpty ||
@@ -107,16 +107,16 @@ class _LoginViewState extends State<LoginView> {
                       "email": _emailTextController.text,
                       "password": _passwordTextController.text,
                     };
-                    authViewModel.loginApiCall(data, context);
+                    authViewModel.signUpApiCall(data, context);
                   }
                 },
               ),
               SizedBox(height: height * .02),
               InkWell(
                 onTap: () {
-                  Navigator.pushReplacementNamed(context, RoutesName.signup);
+                  Navigator.pushReplacementNamed(context, RoutesName.signin);
                 },
-                child: Text("don't have account? Sign Up"),
+                child: Text("Already have account? Sign In"),
               ),
             ],
           ),

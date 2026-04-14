@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
-        initialRoute: RoutesName.login,
+        initialRoute: RoutesName.signin,
         onGenerateRoute: Routes.generateRoutes,
       ),
     );

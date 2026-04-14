@@ -3,5 +3,6 @@ class RoutesName {
   static const String home = 'home_screen';
 
   //loginscreen route name.
-  static const String login = 'login_screen';
+  static const String signin = 'signin_screen';
+  static const String signup = 'signup_screen';
 }

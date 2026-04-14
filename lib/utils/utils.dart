@@ -4,7 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 
 class Utils {
-  static toastMessage(String message) {
+  static void toastMessage(String message) {
     Fluttertoast.showToast(
       msg: message,
       backgroundColor: Colors.blue,
@@ -63,7 +63,10 @@ class Utils {
     );
   }
 
-  static showSnackbar(String message, BuildContext context) {
+  static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showSnackbar(
+    String message,
+    BuildContext context,
+  ) {
     return ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(message), behavior: SnackBarBehavior.floating),
     );
