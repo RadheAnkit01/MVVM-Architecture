@@ -5,4 +5,5 @@ class RoutesName {
   //loginscreen route name.
   static const String signin = 'signin_screen';
   static const String signup = 'signup_screen';
+  static const String splash = 'splash_screen';
 }
